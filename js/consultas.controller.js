@@ -17,11 +17,33 @@ $stateProvider
 		controller: 'todosValoresCtrl'
 
 	});
-	$urlRouterProvider.otherwise("/lucroMensal");
+	$urlRouterProvider.otherwise("home");
+});
+
+//SERVICE user
+app.service('user', function () {
+
+	loggedIn = false;
+	var username;
+	this.setName = function (name) {
+		username = name;
+	};
+
+	this.getName = function () {
+		return username;
+	};
+
+	this.userStatus = function () {
+		return loggedIn;
+	};
+
+	this.userLoggedIn = function () {
+		var loggedIn = true;
+	};
 });
 
 //CONTROLLER userCheck
-app.controller("userCheck", function ($scope, $http) {
+app.controller("userCheck", function ($scope, $http, user) {
 
 	//vars
 	var userLogin = {
@@ -39,7 +61,11 @@ app.controller("userCheck", function ($scope, $http) {
 
 		$http.post("./includes/json_login.php", userLogin)
 		.then(function(response) {
-			console.log(response);
+
+			user.setName(response.data[0].usuario);
+			var teste = user.getName();
+			console.log(teste);
+
 		});
 
 	};
