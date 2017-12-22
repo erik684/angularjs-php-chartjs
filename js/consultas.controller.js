@@ -2,11 +2,14 @@ var app = angular.module("Consultas", [ "ui.router", "chart.js"]);
 
 app.config(function ($stateProvider, $urlRouterProvider) {
 $stateProvider
+	.state('home', {
+		url:'/home',
+		templateUrl: './views/home.php'
+	})
 	.state('lucroMensal', {
 		url:"/lucroMensal",
 		templateUrl: './views/lucroMensal.php',
 		controller: 'graphDataCtrl'
-
 	})
 	.state('todosValores', {
 		url:"/todosValores",
