@@ -31,55 +31,6 @@
 <!-- FIM CONTAINER PRINCIPAL -->
 </div>
 
-<!-- LOGIN MODAL -->
-<div class="modal fade bd-modal-sm" role="dialog" id="loginpopUpWindow" ng-controller="userCheck">
-	<div class="modal-dialog">
-		<div class="modal-content">
-
-		<!-- modal-header -->
-		<div class="modal-header">
-			<legend>Insira os dados abaixo:</legend>
-			<button type="button" class="close" data-dismiss="modal">&times;</button>			
-		</div>
-
-		<div class="modal-body">
-			<!-- FORM LOGIN -->
-			<form class="form-horizontal" id="form" ng-submit="loginCheck()">
-
-			<!-- USER INPUT-->
-			<div class="form-group">
-			  <label class="col-md-4 control-label" for="userLogin.username">Usuário: </label>  
-			  <div class="col-md-7">
-			  <input id="userLogin.username" ng-model="userLogin.username" type="text" placeholder="Digite nome de usuário" class="form-control input-md" required="" maxlength="30">			  
-			  <small class="form-text text-muted">Ex.: lucas_silva, araujo_lima, pedro354</small>
-			  </div>
-
-			</div>
-
-			<!-- PASSWORD INPUT-->
-			<div class="form-group">
-			  <label class="col-md-4 control-label" for="userLogin.password">Senha: </label>
-			  <div class="col-md-7">
-			    <input id="userLogin.password" ng-model="userLogin.password" type="password" placeholder="Digite a senha" class="form-control input-md" required="" maxlength="16">			    
-			  </div>
-			</div>
-
-			<!-- BOTÃO FORM FORM-->
-			<div class="form-group">
-			  <label class="col-md-4 control-label" for="btn_form"></label>
-			  <div class="col-md-4">	
-			  	<button id="btn_login" name="btn_login" class="btn btn-success mb-1" type="submit">Entrar</button>		    			    
-			  	<button id="btn_register" name="btn_register" class="btn btn-primary" type="submit">Cadastrar</button>			  	
-			  </div>
-
-
-			</div>				
-			</fieldset>
-			</form>
-		</div>
-	</div>
-</div>
-
 </body>
 
 </html>

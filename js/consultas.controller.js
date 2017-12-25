@@ -2,6 +2,11 @@ var app = angular.module("Consultas", [ "ui.router", "chart.js"]);
 
 app.config(function ($stateProvider, $urlRouterProvider) {
 $stateProvider
+	.state('login', {
+		url:'/login',
+		templateUrl: './views/login_page.php',
+		controller: 'userCheck'
+	})
 	.state('home', {
 		url:'/home',
 		templateUrl: './views/home.php'
@@ -19,6 +24,7 @@ $stateProvider
 	});
 	$urlRouterProvider.otherwise("home");
 });
+
 
 //SERVICE user
 app.service('user', function () {
@@ -51,33 +57,36 @@ app.controller("userCheck", function ($scope, $http, user) {
 		password: undefined
 	};
 
+	var userSingin = {
+		username: undefined,
+		password: undefined,
+		password2: undefined
+	}
+
 	//functions
 	$scope.loginCheck = function () {
-
+		console.log($scope.userLogin);
 		var userLogin = {
 			username: $scope.userLogin.username,
 			password: $scope.userLogin.password
 		};
 
-		$http.post("./includes/json_login.php", userLogin)
-		.then(function(response) {
-
-			user.setName(response.data[0].usuario);
-			var teste = user.getName();
-			console.log(teste);
-
-		});
-
 	};
 
 	$scope.singinCheck = function () {
 
-	data = [{'usuario': $scope.user_input, 'senha': $scope.usuario}];
+		var userSingin = {
+			username: $scope.userSingin.username,
+			password: $scope.userSingin.password,
+			password2: $scope.userSingin.password2
+		};
 
-	$http.get("http://localhost/AngularJS%20-%20Views/includes/json_login.php", data)
-	.then(function(data) {
-		console.log(data);
-	});
+	// data = [{'usuario': $scope.user_input, 'senha': $scope.usuario}];
+
+	// $http.get("http://localhost/AngularJS%20-%20Views/includes/json_login.php", data)
+	// .then(function(data) {
+	// 	console.log(data);
+	// });
 
 }
 });

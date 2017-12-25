@@ -5,26 +5,35 @@ $request = json_decode($postdata, true);
 $usuario = $request['username'];
 $senha = $request['password'];
 
-header("Content-type: application/json");
+// header("Content-type: application/json");
 
-if (isset($usuario)) {
+if ($_SERVER['REQUEST_METHOD'] == "POST" && $_SERVER['PATH_INFO'] == "/userloggin") {
+	$auxjson = array();
 
-	$dbconnection = mysqli_connect("localhost", "root", "", "hospitais");
-	$sql = "SELECT usuario FROM usuario WHERE
-			usuario = '$usuario' AND
-			senha = '$senha'";
+		if (isset($usuario)) {
+
+		$dbconnection = mysqli_connect("localhost", "root", "", "hospitais");
+		$sql = "SELECT usuario FROM usuario WHERE
+				usuario = '$usuario' AND
+				senha = '$senha'";
+				
+		if ($result = mysqli_query($dbconnection, $sql)) {	
+
+			while ($row = mysqli_fetch_array($result)) {
+			$auxjson[] = $row;
+			}	
 			
-	if ($result = mysqli_query($dbconnection, $sql)) {	
+			echo json_encode($auxjson);
 
-		header("Content-type: application/json");	
-		$auxjson = array();
-		while ($row = mysqli_fetch_array($result)) {
-		$auxjson[] = $row;
+		} else {
+			echo 'teste';
+			$auxjson[] = "Not found";
+			echo json_encode($auxjson);
 
-		}	
-		
-		echo json_encode($auxjson);
-
+		};
 	};
+}
+else if ($_SERVER['REQUEST_METHOD'] == "GET" && $_SERVER['PATH_INFO'] == "/userloggin") {
+	echo 'tsete';
 }
 ?>
