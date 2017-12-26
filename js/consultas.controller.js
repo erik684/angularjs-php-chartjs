@@ -22,7 +22,7 @@ $stateProvider
 		controller: 'todosValoresCtrl'
 
 	});
-	$urlRouterProvider.otherwise("home");
+	$urlRouterProvider.otherwise("login");
 });
 
 
@@ -63,6 +63,12 @@ app.controller("userCheck", function ($scope, $http, user) {
 		password2: undefined
 	}
 
+	$scope.userDialog = { //mostrar/esconder dialogos para usuário
+		passwordMatch: true, //password combina
+		userNotMatch: true, //usuário já existe
+		userRegistred: true //usuário registrado
+	}
+
 	//functions
 	$scope.loginCheck = function () {
 		console.log($scope.userLogin);
@@ -70,7 +76,6 @@ app.controller("userCheck", function ($scope, $http, user) {
 			username: $scope.userLogin.username,
 			password: $scope.userLogin.password
 		};
-
 	};
 
 	$scope.singinCheck = function () {
@@ -81,14 +86,36 @@ app.controller("userCheck", function ($scope, $http, user) {
 			password2: $scope.userSingin.password2
 		};
 
-	// data = [{'usuario': $scope.user_input, 'senha': $scope.usuario}];
+	if (userSingin.password != userSingin.password2) { // se passsword não combina
 
-	// $http.get("http://localhost/AngularJS%20-%20Views/includes/json_login.php", data)
-	// .then(function(data) {
-	// 	console.log(data);
-	// });
+		$scope.userDialog = {
+			passwordMatch: false
+		}
 
-}
+	} else {
+		//verifica request se usuário existe
+		data = {
+			"username": userSingin.username,
+			"password": userSingin.password
+		};
+
+		$http.post("./includes/json_login.php/usuario", data)
+		.then(function (response) {
+
+			if (response.data == "User registred") {
+				$scope.userDialog = true;
+				$scope.userDialog.userRegistred = false;
+			} else if (response.data == "User already exists") {
+				$scope.userDialog = true;				
+				$scope.userDialog.userNotMatch = false;
+
+			};
+
+		}).catch(function (response) {
+			alert(response);
+		});
+		};
+	}
 });
 
 // CONTROLLER todosValoresCtrl

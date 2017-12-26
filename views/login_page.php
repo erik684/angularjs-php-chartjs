@@ -1,7 +1,23 @@
 <h1 class="text-left pb-3 pt-3">Página de Login</h1>
 <div class="container">
 	<div class="row">		
-		<div class="col-md-6"><!-- FORM SINGIN -->			
+		<div class="col-md-6"><!-- FORM SINGIN -->	
+
+		  <div class="alert alert-warning alert-dismissable" ng-hide="userDialog.passwordMatch">
+		    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		    <strong>Senhas não combinam!</strong> As duas senhas digitadas não combinam, digite novamente.
+		  </div>
+
+		  <div class="alert alert-warning alert-dismissable" ng-hide="userDialog.userNotMatch">
+		    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		    <strong>Usuário já existe!</strong> Tente com outro nome.
+		  </div>
+
+		  <div class="alert alert-success alert-dismissable" ng-hide="userDialog.userRegistred">
+		    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		    <strong>Usuário registrado!</strong> Tente efetuar Login.
+		  </div>
+
 			<form class="form-horizontal" id="form-singin" ng-submit="singinCheck()">
 				<label for="form"><strong>REGISTRAR: </strong></label>
 
@@ -79,3 +95,7 @@
 	</div>
 </div>
 <!-- END CONTAINER -->
+
+<script>
+	
+</script>
