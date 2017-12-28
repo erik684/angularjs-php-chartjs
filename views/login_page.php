@@ -3,20 +3,21 @@
 	<div class="row">		
 		<div class="col-md-6"><!-- FORM SINGIN -->	
 
-		  <div class="alert alert-warning alert-dismissable" ng-hide="userDialog.passwordMatch">
-		    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		    <strong>Senhas não combinam!</strong> As duas senhas digitadas não combinam, digite novamente.
-		  </div>
+			<!-- ALERTAS BOOSTRAP -->			
+			<div class="alert alert-warning alert-dismissable" ng-hide="userDialog.passwordMatch">
+				<a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Senhas não combinam!</strong> As duas senhas digitadas não combinam, digite novamente.
+			</div>
 
-		  <div class="alert alert-warning alert-dismissable" ng-hide="userDialog.userNotMatch">
-		    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		    <strong>Usuário já existe!</strong> Tente com outro nome.
-		  </div>
+			<div class="alert alert-warning alert-dismissable" ng-hide="userDialog.userNotMatch">
+				<a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Usuário já existe!</strong> Tente com outro nome.
+			</div>
 
-		  <div class="alert alert-success alert-dismissable" ng-hide="userDialog.userRegistred">
-		    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		    <strong>Usuário registrado!</strong> Tente efetuar Login.
-		  </div>
+			<div class="alert alert-success alert-dismissable" ng-hide="userDialog.userRegistred">
+				<a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Usuário registrado!</strong> Tente efetuar Login.
+			</div>
 
 			<form class="form-horizontal" id="form-singin" ng-submit="singinCheck()">
 				<label for="form"><strong>REGISTRAR: </strong></label>
@@ -61,6 +62,12 @@
 
 		<div class="col-md-6" style="border-left: groove"><!-- FORM LOGIN -->			
 			<form class="form-horizontal" id="form-login" ng-submit="loginCheck()">
+
+			<!-- ALERTAS BOOTSTRAP -->
+			<div class="alert alert-warning alert-dismissable" ng-hide="userDialog.userNExist">
+				<a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Usuário não existe!</strong> ou usuário/senha está incorreto.
+			</div>
 
 			<label for="form"><strong>ENTRAR: </strong></label>
 			<!-- USER INPUT-->
