@@ -9,18 +9,38 @@ $stateProvider
 	})
 	.state('home', {
 		url:'/home',
-		templateUrl: './views/home.php'
+		templateUrl: './views/home.php',
+		resolve: {
+			check: function($state, user) {
+				if (!user.userStatus()) {
+					$state.go("login");
+				};
+			}
+		}
 	})
 	.state('lucroMensal', {
 		url:"/lucroMensal",
 		templateUrl: './views/lucroMensal.php',
-		controller: 'graphDataCtrl'
+		controller: 'graphDataCtrl',
+		resolve: {
+			check: function($state, user) {
+				if (!user.userStatus()) {
+					$state.go("login");
+				};
+			}
+		}
 	})
 	.state('todosValores', {
 		url:"/todosValores",
 		templateUrl: './views/todosValores.php',
-		controller: 'todosValoresCtrl'
-
+		controller: 'todosValoresCtrl',
+		resolve: {
+			check: function($state, user) {
+				if (!user.userStatus()) {
+					$state.go("login");
+				};
+			}
+		}
 	});
 	$urlRouterProvider.otherwise("login");
 });
@@ -29,7 +49,7 @@ $stateProvider
 //SERVICE user
 app.service('user', function () {
 
-	loggedIn = false;
+	var loggedIn = false;
 	var username;
 	this.setName = function (name) {
 		username = name;
@@ -44,12 +64,12 @@ app.service('user', function () {
 	};
 
 	this.userLoggedIn = function () {
-		var loggedIn = true;
+		loggedIn = true;
 	};
 });
 
 //CONTROLLER userCheck
-app.controller("userCheck", function ($scope, $http, user) {
+app.controller("userCheck", function ($scope, $state, $http, user) {
 
 	//vars
 	var userLogin = {
@@ -80,14 +100,19 @@ app.controller("userCheck", function ($scope, $http, user) {
 
 		$http.post("./includes/json_login.php/usuariologgin", data)
 		.then(function (response) {
-			console.log(response.data);
+
+			if (response.data.status == "Wrong username or password or user doesn't exist") {
+
+				$scope.userDialog.userNExist = false;
+
+			} else if (response.data.status == "User logged in") {
+				
+				user.setName = response.data.username;
+				user.userLoggedIn();
+				$state.go('home');		
+
+			};
 		});
-		// var userLogin = {
-		// 	username: $scope.userLogin.username,
-		// 	password: $scope.userLogin.password
-		// };
-
-
 	};
 
 	$scope.singinCheck = function () {
@@ -100,9 +125,7 @@ app.controller("userCheck", function ($scope, $http, user) {
 
 		if (userSingin.password != userSingin.password2) { // se passsword não combina
 
-			$scope.userDialog = {
-				passwordMatch: false
-			};
+			$scope.userDialog.passwordMatch = false;
 
 		} else {		
 			//verifica request se usuário existe
@@ -114,8 +137,11 @@ app.controller("userCheck", function ($scope, $http, user) {
 
 			$http.post("./includes/json_login.php/usuario", data)
 			.then(function (response) {
+
 				if (response.data.status == "User registred") {
+
 					$scope.userDialog.userRegistred = false;
+
 				} else if (response.data.status == "User already exists") {				
 					$scope.userDialog.userNotMatch = false;
 				};

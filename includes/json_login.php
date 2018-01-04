@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_SERVER['PATH_INFO'] == "/usuariolo
 				//usuário login
 				$row = [];
 				$row = mysqli_fetch_assoc($result);
+				
 				if ($row['usuario'] == $usuario) {
 					session_start();
 					$_SESSION['usuario'] = $row['usuario'];
@@ -85,7 +86,7 @@ else if ($_SERVER['REQUEST_METHOD'] == "POST" && $_SERVER['PATH_INFO'] == "/usua
 
 		} else {
 			$auxjson['status'] = "Params not given, NEED 'username' and 'password'";
-			echo json_encode("Params not given, NEED 'username' and 'password'");
+			echo json_encode($auxjson);
 		};
 };
 
