@@ -88,6 +88,21 @@ app.factory("userLogin", function ($http) {
 	return factory;
 });
 
+app.factory("graphDataFactory", function ($http) {
+
+	factory = {};
+
+		factory.getData = function () {
+			return $http.get("./includes/json_filtrar_valores.php?selectAno=todos&selectMes=todos");
+		}
+
+		factory.getYears = function () {
+			return $http.get("./includes/json_filtrar_distinct_ano");
+		}
+
+	return factory;
+});
+
 //CONTROLLER userCheck
 app.controller("userCheck", function ($scope, $rootScope, $state, $http, user, userLogin) {
 
@@ -233,10 +248,8 @@ app.controller("todosValoresCtrl", function ($scope, $http) {
 
 
 // CONTROLLER graphDataCtrl
-app.controller("graphDataCtrl", function ($scope, $http) {	
-	// if (true) {
-	// 	$state.go('home');
-	// };
+app.controller("graphDataCtrl", function ($scope, $http, graphDataFactory) {	
+
 	$scope.graphType = 'line';
 
 	$scope['options'] = 
@@ -250,45 +263,43 @@ app.controller("graphDataCtrl", function ($scope, $http) {
 		}
 	};
 
-	$http.get("http://localhost/Angular_ChartJs - Copia/includes/json_filtrar_distinct_ano") // series de datas em Ano
-		.then(function(data){
-			$scope['series'] = data.data.map(function(obj){
-				return $scope.numAno(obj.ano);
+	factory.getYears().then(function (response) { // series de datas em Ano
+		$scope['series'] = response.data.map(function(obj){
+		return $scope.numAno(obj.ano);
 		});
 	});
 
-	$http.get("http://localhost/Angular_ChartJs - Copia/includes/json_filtrar_valores.php?selectAno=todos&selectMes=todos")
-		.then(function(data){
+	factory.getData().then(function (response) {
 
-	$scope['meses'] = [];
-	$scope['ano'] = [];
-	$scope['valor_total'] = [];
+		//vars
+		var auxArray;
+		x = 0;
+		count = Math.round(response.data.length/12); 
+		sliced = [];
+		$scope['meses'] = [];
+		$scope['ano'] = [];
+		$scope['valor_total'] = [];
 
-	for(i = 1; i <= 12; i++) { //preenche 'meses' com nome de cada mes
-		$scope['meses'][i-1] = $scope.numMes(i); //meses inicia com indice 0 a 11
-	}
-
-	var auxArray = data.data.map(function (obj) {
-	  return obj.valor_total;
-	});
-
-	x = 0;
-	count = Math.round(data.data.length/12); 
-	sliced = [];
-
-	for (i = 0; i < count; i++) {	
-		if ( ((auxArray[x]||[]) === undefined) || ((auxArray[x]||[]) === undefined) )  {
-			break;
+		for(i = 1; i <= 12; i++) { //preenche 'meses' com nome de cada mes
+			$scope['meses'][i-1] = $scope.numMes(i); //meses inicia com indice 0 a 11
 		}
-		else {	
-							
-			sliced = auxArray.slice(x, (x+12));			
-			x = x + 12;	
-			$scope['valor_total'][i] = sliced;	
-			sliced = [];	
-		}
-	}
 
+		auxArray = response.data.map(function (obj) {
+		  return obj.valor_total;
+		});
+
+		for (i = 0; i < count; i++) {	
+			if ( ((auxArray[x]||[]) === undefined) || ((auxArray[x]||[]) === undefined) )  {
+				break;
+			}
+			else {	
+								
+				sliced = auxArray.slice(x, (x+12));			
+				x = x + 12;	
+				$scope['valor_total'][i] = sliced;	
+				sliced = [];	
+			}
+		}		
 	});
 
 	$scope.graphChange = function (type) {
