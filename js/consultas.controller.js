@@ -37,7 +37,7 @@ $stateProvider
 		resolve: {
 			check: function($state, user) {
 				if (!user.userStatus()) {
-					$state.go("login", { "id": 123});
+					$state.go("login");
 				};
 			}
 		}
@@ -68,14 +68,28 @@ app.service('user', function () {
 		loggedIn = true;
 	}
 
-
 	this.getUserView = function () {
 		return userView;
 	}
 });
 
+app.factory("userLogin", function ($http) {
+
+	factory = {};
+
+	factory.login = function (data) {
+		return $http.post("./includes/json_login.php/usuariologgin", data);
+	}
+
+	factory.singin = function (data) {
+		return $http.post("./includes/json_login.php/usuario", data);
+	}
+
+	return factory;
+});
+
 //CONTROLLER userCheck
-app.controller("userCheck", function ($scope, $rootScope, $state, $http, user) {
+app.controller("userCheck", function ($scope, $rootScope, $state, $http, user, userLogin) {
 
 	//vars
 	var userLogin = {
@@ -110,6 +124,7 @@ app.controller("userCheck", function ($scope, $rootScope, $state, $http, user) {
 	};
 
 	$scope.loginCheck = function () {
+
 		data = {
 			"username": $scope.userLogin.username,
 			"password": $scope.userLogin.password
@@ -124,10 +139,16 @@ app.controller("userCheck", function ($scope, $rootScope, $state, $http, user) {
 
 			} else if (response.data.status == "User logged in") {
 
-				user.setName = response.data.username;
-				user.userLoggedIn();
-				$rootScope.setUserView();
-				$state.go('home');
+				factory.login(data).then(function (response) {
+
+					user.setName = response.data.username;
+					user.userLoggedIn();
+					$rootScope.setUserView();
+					$state.go('home');
+
+				});
+				
+
 
 			};
 		});
@@ -146,7 +167,7 @@ app.controller("userCheck", function ($scope, $rootScope, $state, $http, user) {
 
 			$scope.userDialog.passwordMatch = false;
 
-		} else {		
+		} else {
 			//verifica request se usuário existe
 			
 			data = {
@@ -154,8 +175,7 @@ app.controller("userCheck", function ($scope, $rootScope, $state, $http, user) {
 				"password": userSingin.password
 			};
 
-			$http.post("./includes/json_login.php/usuario", data)
-			.then(function (response) {
+			factory.singin(data).then(function (response) {
 
 				if (response.data.status == "User registred") {
 
@@ -164,10 +184,8 @@ app.controller("userCheck", function ($scope, $rootScope, $state, $http, user) {
 				} else if (response.data.status == "User already exists") {				
 					$scope.userDialog.userNotMatch = false;
 				};
-
-			}).catch(function (response) {
-				alert(response);
 			});
+
 		};
 	}
 });
