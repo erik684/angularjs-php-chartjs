@@ -37,7 +37,7 @@ $stateProvider
 		resolve: {
 			check: function($state, user) {
 				if (!user.userStatus()) {
-					$state.go("login");
+					$state.go("login", { "id": 123});
 				};
 			}
 		}
@@ -51,6 +51,7 @@ app.service('user', function () {
 
 	var loggedIn = false;
 	var username;
+
 	this.setName = function (name) {
 		username = name;
 	};
@@ -65,11 +66,16 @@ app.service('user', function () {
 
 	this.userLoggedIn = function () {
 		loggedIn = true;
-	};
+	}
+
+
+	this.getUserView = function () {
+		return userView;
+	}
 });
 
 //CONTROLLER userCheck
-app.controller("userCheck", function ($scope, $state, $http, user) {
+app.controller("userCheck", function ($scope, $rootScope, $state, $http, user) {
 
 	//vars
 	var userLogin = {
@@ -83,16 +89,27 @@ app.controller("userCheck", function ($scope, $state, $http, user) {
 		password2: undefined
 	}
 
+	$rootScope.userView = { //mostrar/esconder menu para usuário
+		lucroBtn: false,
+		tdvaloresBtn: false,
+		logoutBtn: false
+	};
+
 	$scope.userDialog = { //mostrar/esconder dialogos para usuário
 		passwordMatch: true, //password combina
 		userNotMatch: true, //usuário já existe
 		userRegistred: true, //usuário registrado
 		userNExist: true //usuário não registrado
-	}
+	};
 
 	//functions
-	$scope.loginCheck = function () {
+	$rootScope.setUserView = function () {
+		$rootScope.userView.lucroBtn = true;
+		$rootScope.userView.tdvaloresBtn = true;
+		$rootScope.userView.logoutBtn = true;
+	};
 
+	$scope.loginCheck = function () {
 		data = {
 			"username": $scope.userLogin.username,
 			"password": $scope.userLogin.password
@@ -106,13 +123,15 @@ app.controller("userCheck", function ($scope, $state, $http, user) {
 				$scope.userDialog.userNExist = false;
 
 			} else if (response.data.status == "User logged in") {
-				
+
 				user.setName = response.data.username;
 				user.userLoggedIn();
-				$state.go('home');		
+				$rootScope.setUserView();
+				$state.go('home');
 
 			};
 		});
+
 	};
 
 	$scope.singinCheck = function () {
@@ -196,7 +215,7 @@ app.controller("todosValoresCtrl", function ($scope, $http) {
 
 
 // CONTROLLER graphDataCtrl
-app.controller("graphDataCtrl", function ($scope, $http, $state) {	
+app.controller("graphDataCtrl", function ($scope, $http) {	
 	// if (true) {
 	// 	$state.go('home');
 	// };
@@ -253,7 +272,6 @@ app.controller("graphDataCtrl", function ($scope, $http, $state) {
 	}
 
 	});
-
 
 	$scope.graphChange = function (type) {
 		$scope.graphType = type;

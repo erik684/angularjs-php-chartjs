@@ -9,10 +9,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
 <script src="//unpkg.com/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
-<script src="js/angular-chart"></script>
 <script src="js/angular-chart.min.js"></script>
-<script src="js/consultas.module.js"></script>
 <script src="js/consultas.controller.js"></script>
+
 
 <meta charset="UTF-8">
 <title>Página Inicial</title>
