@@ -10,7 +10,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
 <script src="//unpkg.com/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
 <script src="js/angular-chart.min.js"></script>
-<script src="js/consultas.controller.js"></script>
+
+<script src="js/consultas.module.js"></script>
+
+<script src="services/user.service.js"></script>
+
+<script src="factory/userlogin.factory.js"></script>
+<script src="factory/graphdata.factory.js"></script>
+
+<script src="controllers/usercheck.controller.js"></script>
+<script src="controllers/graphdatactrl.controller.js"></script>
+<script src="controllers/todosvaloresctrl.controller.js"></script>
 
 
 <meta charset="UTF-8">
