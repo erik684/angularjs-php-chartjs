@@ -3,7 +3,7 @@ angular
 	.module("Consultas")
 	.controller("userCheck", userCheck);
 
-function userCheck($scope, $rootScope, $state, user, userLogin) {
+function userCheck($scope, $rootScope, $state, $interval, user, userLogin) {
 
 	//vars
 	userLogin = {};
@@ -42,6 +42,22 @@ function userCheck($scope, $rootScope, $state, user, userLogin) {
 		$rootScope.userView.logoutBtn = true;
 	};
 
+	$scope.countAlert = function () {
+		$scope.timer = 5;
+
+		function count () {
+		$scope.timer--;			
+		};
+
+		timer = $interval(count, 1000, 5)
+			.then(function() {
+				$scope.userDialog.passwordMatch = true;
+				$scope.userDialog.userNotMatch = true;
+				$scope.userDialog.userRegistred = true;
+				$scope.userDialog.userNExist = true;
+			});
+	};
+
 	$scope.loginCheck = function () {
 
 		data = {
@@ -54,6 +70,7 @@ function userCheck($scope, $rootScope, $state, user, userLogin) {
 		if (response.data.status == "Wrong username or password or user doesn't exist") {
 
 			$scope.userDialog.userNExist = false;
+			$scope.countAlert();
 
 		} else if (response.data.status == "User logged in") {
 
@@ -76,6 +93,7 @@ function userCheck($scope, $rootScope, $state, user, userLogin) {
 		if (userSingin.password != userSingin.password2) { // se passsword não combina
 
 			$scope.userDialog.passwordMatch = false;
+			$scope.countAlert();
 
 		} else {
 
@@ -90,9 +108,13 @@ function userCheck($scope, $rootScope, $state, user, userLogin) {
 				if (response.data.status == "User registred") {
 
 					$scope.userDialog.userRegistred = false;
+					$scope.countAlert();
 
-				} else if (response.data.status == "User already exists") {				
+				} else if (response.data.status == "User already exists") {			
+
 					$scope.userDialog.userNotMatch = false;
+					$scope.countAlert();
+
 				};
 			});
 		};

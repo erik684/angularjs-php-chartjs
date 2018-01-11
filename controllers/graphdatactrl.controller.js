@@ -4,6 +4,20 @@ angular
 	.controller("graphDataCtrl", graphDataCtrl);
 
 function graphDataCtrl($scope, graphDataFactory) {	
+	var vm = this;
+
+	$scope.graphView = {
+		addData: false,
+		addDataBtn: false,
+		addDataConf: true
+	};
+
+	this.graphAdd = {
+		idade: undefined,
+		valor: undefined,
+		mes: undefined,
+		ano: undefined
+	}
 
 	$scope.graphType = 'line';
 
@@ -56,12 +70,29 @@ function graphDataCtrl($scope, graphDataFactory) {
 		}
 	});
 
+	$scope.addData = function() {
+		factory.setData(this.graphAdd).then(function (response) {
+			console.log(response.data);
+		});
+	};
+
+	$scope.setGraphView = function () 
+	{
+		$scope.graphView.addData = !$scope.graphView.addData;
+		$scope.graphView.addDataBtn = !$scope.graphView.addDataBtn;
+		
+	}
+
 	$scope.graphChange = function (type) {
+
 		$scope.graphType = type;
+
 	}
 
 	$scope.roundValue = function(valor) {
+
 		return (Math.round(valor));
+
 	}
 
 	$scope.numAno = function (ano) {

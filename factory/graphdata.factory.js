@@ -14,5 +14,9 @@ function graphDataFactory ($http) {
 		return $http.get("./includes/json_filtrar_distinct_ano");
 	}
 
+	factory.setData = function (data) {
+		return $http.post("./includes/json_cadastrar_dados.php/graph", data)
+	}
+
 	return factory;
 };
