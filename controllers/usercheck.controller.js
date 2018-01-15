@@ -20,6 +20,7 @@ function userCheck($rootScope, $state, $interval, user, userLogin) {
 	vm.loginCheck = loginCheck;
 	vm.singinCheck = singinCheck;
 
+
 	vm.userLogin = {
 		username: undefined,
 		password: undefined
@@ -34,8 +35,17 @@ function userCheck($rootScope, $state, $interval, user, userLogin) {
 	$rootScope.userView = { //mostrar/esconder menu para usuário
 		lucroBtn: false,
 		tdvaloresBtn: false,
-		logoutBtn: false
-	};
+		logoutBtn: false,
+		
+		userLogout: function() {
+			user.userLogout();
+			$rootScope.userView.lucroBtn = false;
+			$rootScope.userView.tdvaloresBtn = false;
+			$rootScope.userView.logoutBtn = false;
+			$state.reload();
+			}
+		}
+
 
 	vm.userDialog = { //mostrar/esconder dialogos para usuário
 		passwordMatch: false, //password combina
@@ -133,4 +143,10 @@ function userCheck($rootScope, $state, $interval, user, userLogin) {
 		};
 
 	};
+
+	// $rootScope.userView.logoutCheck = function logoutCheck () {
+	// 	console.log("logOut");
+
+	// };
+
 };

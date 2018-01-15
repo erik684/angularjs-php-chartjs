@@ -22,7 +22,11 @@ function user() {
 
 	this.userLoggedIn = function () {
 		loggedIn = true;
-	}
+	};
+
+	this.userLogout = function() {
+		loggedIn = false;		
+	};
 
 	this.getUserView = function () {
 		return userView;

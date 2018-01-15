@@ -1,5 +1,5 @@
 	<!-- NAVBAR -->
-	<nav class="navbar navbar-toggleable-md navbar-inverse rounded bg-inverse mr-0 mt-0 pb-auto pt-auto" ng-controller="userCheck">
+	<nav class="navbar navbar-toggleable-md navbar-inverse rounded bg-inverse mr-0 mt-0 pb-auto pt-auto">
 	  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
@@ -16,7 +16,7 @@
 			<a class="nav-link" data-toggle="modal" data-target="#loginpopUpWindow" href="">Entrar</a>
 		   </li> -->
 			<li class="active li-navbar" ng-show="userView.logoutBtn">
-				<button id="btn_sair" class="btn btn-danger mt-0 mb-0 btn-sair" name="btn_sair" type="submit">Sair</button>
+				<button id="btn_sair" class="btn btn-danger mt-0 mb-0 btn-sair" name="btn_sair" type="button" ng-click="userView.userLogout()">Sair</button>
 			</li>			
 	    </ul>
 	  </div>
