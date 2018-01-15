@@ -7,12 +7,12 @@ angular
 	$stateProvider
 		.state('login', {
 			url:'/login',
-			templateUrl: './views/loginPage.php',
-			controller: 'userCheck'
+			templateUrl: './views/loginPage.html',
+			controller: 'userCheck as user'
 		})
 		.state('home', {
 			url:'/home',
-			templateUrl: './views/home.php',
+			templateUrl: './views/home.html',
 			resolve: {
 				check: function($state, user) {
 					if (!user.userStatus()) {
@@ -23,8 +23,8 @@ angular
 		})
 		.state('lucroMensal', {
 			url:"/lucroMensal",
-			templateUrl: './views/lucroMensal.php',
-			controller: 'graphDataCtrl',
+			templateUrl: './views/lucroMensal.html',
+			controller: 'graphDataCtrl as graph',
 			resolve: {
 				check: function($state, user) {
 					if (!user.userStatus()) {
@@ -35,7 +35,7 @@ angular
 		})
 		.state('todosValores', {
 			url:"/todosValores",
-			templateUrl: './views/todosValores.php',
+			templateUrl: './views/todosValores.html',
 			controller: 'todosValoresCtrl',
 			resolve: {
 				check: function($state, user) {

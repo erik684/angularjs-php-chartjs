@@ -3,20 +3,29 @@ angular
 	.module("Consultas")
 	.controller("userCheck", userCheck);
 
-function userCheck($scope, $rootScope, $state, $interval, user, userLogin) {
+function userCheck($rootScope, $state, $interval, user, userLogin) {
+	var vm = this;
 
 	//vars
-	userLogin = {};
-	userSingin = {};
-	$scope.userDialog = {};
+	vm.timer;
+
+	//obj
+	vm.userLogin = {};
+	vm.userSingin = {};
+	vm.userDialog = {};
 	$rootScope.userView = {};
 
-	userLogin = {
+	//functions
+	vm.countAlert = countAlert;
+	vm.loginCheck = loginCheck;
+	vm.singinCheck = singinCheck;
+
+	vm.userLogin = {
 		username: undefined,
 		password: undefined
 	};
 
-	userSingin = {
+	vm.userSingin = {
 		username: undefined,
 		password: undefined,
 		password2: undefined
@@ -28,11 +37,11 @@ function userCheck($scope, $rootScope, $state, $interval, user, userLogin) {
 		logoutBtn: false
 	};
 
-	$scope.userDialog = { //mostrar/esconder dialogos para usuário
-		passwordMatch: true, //password combina
-		userNotMatch: true, //usuário já existe
-		userRegistred: true, //usuário registrado
-		userNExist: true //usuário não registrado
+	vm.userDialog = { //mostrar/esconder dialogos para usuário
+		passwordMatch: false, //password combina
+		userNotMatch: false, //usuário já existe
+		userRegistred: false, //usuário registrado
+		userNExist: false //usuário não registrado
 	};
 
 	//functions
@@ -40,37 +49,40 @@ function userCheck($scope, $rootScope, $state, $interval, user, userLogin) {
 		$rootScope.userView.lucroBtn = true;
 		$rootScope.userView.tdvaloresBtn = true;
 		$rootScope.userView.logoutBtn = true;
+
 	};
 
-	$scope.countAlert = function () {
-		$scope.timer = 5;
+	function countAlert () {
+		vm.timer = 5;
 
 		function count () {
-		$scope.timer--;			
+			vm.timer--;			
 		};
 
 		timer = $interval(count, 1000, 5)
 			.then(function() {
-				$scope.userDialog.passwordMatch = true;
-				$scope.userDialog.userNotMatch = true;
-				$scope.userDialog.userRegistred = true;
-				$scope.userDialog.userNExist = true;
+				vm.userDialog.passwordMatch = false;
+				vm.userDialog.userNotMatch = false;
+				vm.userDialog.userRegistred = false;
+				vm.userDialog.userNExist = false;
 			});
+
 	};
 
-	$scope.loginCheck = function () {
+	function loginCheck () {
+		console.log("loginCheck");
 
 		data = {
-			"username": $scope.userLogin.username,
-			"password": $scope.userLogin.password
+			"username": vm.userLogin.username,
+			"password": vm.userLogin.password
 		};
 
 		factory.login(data).then(function (response) {
 
 		if (response.data.status == "Wrong username or password or user doesn't exist") {
 
-			$scope.userDialog.userNExist = false;
-			$scope.countAlert();
+			vm.userDialog.userNExist = true;
+			vm.countAlert();
 
 		} else if (response.data.status == "User logged in") {
 
@@ -80,20 +92,21 @@ function userCheck($scope, $rootScope, $state, $interval, user, userLogin) {
 				$state.go('home');
 			};			
 		});
+
 	};
 
-	$scope.singinCheck = function () {
+	function singinCheck () {
 
 		var userSingin = {
-			username: $scope.userSingin.username,
-			password: $scope.userSingin.password,
-			password2: $scope.userSingin.password2
+			username: vm.userSingin.username,
+			password: vm.userSingin.password,
+			password2: vm.userSingin.password2
 		};
 
 		if (userSingin.password != userSingin.password2) { // se passsword não combina
 
-			$scope.userDialog.passwordMatch = false;
-			$scope.countAlert();
+			vm.userDialog.passwordMatch = true;
+			vm.countAlert();
 
 		} else {
 
@@ -107,16 +120,17 @@ function userCheck($scope, $rootScope, $state, $interval, user, userLogin) {
 
 				if (response.data.status == "User registred") {
 
-					$scope.userDialog.userRegistred = false;
-					$scope.countAlert();
+					vm.userDialog.userRegistred = true;
+					vm.countAlert();
 
 				} else if (response.data.status == "User already exists") {			
 
-					$scope.userDialog.userNotMatch = false;
-					$scope.countAlert();
+					vm.userDialog.userNotMatch = true;
+					vm.countAlert();
 
 				};
 			});
 		};
-	}
+
+	};
 };

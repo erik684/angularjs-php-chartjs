@@ -1,0 +1,66 @@
+<div class="container">
+
+	<!-- ALERTAS BOOSTRAP -->
+	<div class="alert alert-success alert-dismissable fade show mt-3" ng-show="graph.graphDialog.addData">
+		<a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Registrado! </strong>Novo valor registrado com sucesso! <strong>{{graph.timer}}</strong>
+	</div>
+
+	<div class="alert alert-warning alert-dismissable fade show mt-3" ng-show="graph.graphDialog.addData">
+		<a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Apagado! </strong>Valor apagado com sucesso! <strong>{{graph.timer}}</strong>
+	</div>
+
+<hr>
+	<form ng-submit="graph.addData()" class="form-group">
+		<div class="row">
+			<div class="col-md-3 form-group" ng-show="graph.graphView.addData">
+				<input class="form-control" type="number" placeholder="Idade" ng-model="graph.graphDataAdd.idade">
+			</div>
+
+			<div class="col-md-3 form-group" ng-show="graph.graphView.addData">
+				<input class="form-control" type="number" placeholder="Valor" ng-model="graph.graphDataAdd.valor">
+			</div>
+
+			<div class="col-md-3 form-group" ng-show="graph.graphView.addData">
+				<input class="form-control" type="text" placeholder="Mes" ng-model="graph.graphDataAdd.mes">			
+			</div>
+			<div class="col-md-3 form-group" ng-show="graph.graphView.addData">
+				<input class="form-control" type="text" placeholder="Ano" ng-model="graph.graphDataAdd.ano">
+			</div>	
+			<div class="col-md-12 form-group" ng-show="graph.graphView.addDataBtn">
+				<button id="btn_add" name="btn_add" class="btn btn-success" type="submit">Adicionar</button>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12 form-group">
+				<button class="btn btn-primary" name="button-asd" ng-click="graph.setGraphView()" type="button"><span class="fa fa-cog mr-1"></span>Opções</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+
+<!-- CONTAINER CANVAS-CHARTJS -->
+<div class="container"> 
+
+<form action="">
+	<label for="">Escolha o tipo de gráfico: </label><br>
+	<input type="radio" name="type" ng-click="graph.graphChange('line')" checked> Line
+	<input type="radio" name="type" ng-click="graph.graphChange('bar')"> Bar
+	<input type="radio" name="type" ng-click="graph.graphChange('polarArea')">	Polar Area 
+	<input type="radio" name="type" ng-click="graph.graphChange('radar')"> Radar 
+	<input type="radio" name="type" ng-click="graph.graphChange('doughnut')"> Doughnut
+</form>
+
+	<canvas id="base" class="chart chart-base"
+	chart-type="graph.graphType"
+	chart-data="graph.valor_total"
+	chart-labels="graph.meses"
+	chart-series="graph.series"
+	chart-options="graph.options">
+	</canvas>
+
+</div>
+

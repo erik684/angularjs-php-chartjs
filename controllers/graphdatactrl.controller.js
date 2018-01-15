@@ -3,26 +3,17 @@ angular
 	.module("Consultas")
 	.controller("graphDataCtrl", graphDataCtrl);
 
-function graphDataCtrl($scope, graphDataFactory) {	
+function graphDataCtrl($rootScope, $interval, graphDataFactory) {	
 	var vm = this;
 
-	$scope.graphView = {
-		addData: false,
-		addDataBtn: false,
-		addDataConf: true
-	};
-
-	this.graphAdd = {
-		idade: undefined,
-		valor: undefined,
-		mes: undefined,
-		ano: undefined
-	}
-
-	$scope.graphType = 'line';
-
-	$scope['options'] = 
-	{	
+	//vars
+	vm['graphType'] = 'line';	
+	vm['options'] = {};
+	vm['series'] = {};
+	vm['meses'] = [];
+	vm['ano'] = [];
+	vm['valor_total'] = [];
+	vm['options'] =	{
 		title: { 
 			display: true,
 			text:'Gráfico com valor de consultas por Mês e Ano'
@@ -32,10 +23,46 @@ function graphDataCtrl($scope, graphDataFactory) {
 		}
 	};
 
+
+	//obj
+	vm.graphDataAdd = {};
+	vm.graphDialog = {};
+	vm.graphView = {};
+
+	//functions
+	vm.addData = addData;
+	vm.countAlert = countAlert;	
+	vm.setGraphView = setGraphView;	
+	vm.graphChange = graphChange;
+	vm.numAno = numAno;
+	vm.numMes = numMes;
+
+	vm.graphDataAdd = {
+		idade: undefined,
+		valor: undefined,
+		mes: undefined,
+		ano: undefined
+	};
+
+	vm.graphDialog = {
+		addData: false,
+		delData: false,
+		alterData: false
+	};
+
+	vm.graphView = {
+		addData: false,
+		addDataBtn: false,
+		addDataConf: true
+	};
+
+
 	factory.getYears().then(function (response) { // series de datas em Ano
-		$scope['series'] = response.data.map(function(obj){
-		return $scope.numAno(obj.ano);
+		vm['series'] = response.data.map(function(obj){
+			return vm.numAno(obj.ano);
 		});
+
+		console.log(vm['series']);;
 	});
 
 	factory.getData().then(function (response) {
@@ -45,16 +72,14 @@ function graphDataCtrl($scope, graphDataFactory) {
 		x = 0;
 		count = Math.round(response.data.length/12); 
 		sliced = [];
-		$scope['meses'] = [];
-		$scope['ano'] = [];
-		$scope['valor_total'] = [];
+
 
 		auxArray = response.data.map(function (obj) {
 		  return obj.valor_total;
 		});
 
 		for(i = 1; i <= 12; i++) { //preenche 'meses' com nome de cada mes
-			$scope['meses'][i-1] = $scope.numMes(i); //meses inicia com indice 0 a 11
+			vm['meses'][i-1] = vm.numMes(i); //meses inicia com indice 0 a 11
 		}
 
 		for (i = 0; i < count; i++) {	
@@ -64,38 +89,63 @@ function graphDataCtrl($scope, graphDataFactory) {
 			else {								
 				sliced = auxArray.slice(x, (x+12));			
 				x = x + 12;	
-				$scope['valor_total'][i] = sliced;	
+				vm['valor_total'][i] = sliced;	
 				sliced = [];	
 			}
 		}
 	});
 
-	$scope.addData = function() {
-		factory.setData(this.graphAdd).then(function (response) {
-			console.log(response.data);
+	function addData () {
+
+		factory.setData(vm.graphDataAdd).then(function (response) {
+			console.log(vm.graphDataAdd);
+			if (response.data.status == "Registred") {
+				vm.graphDialog.addData = true;
+				vm.countAlert();
+				// vm.$apply();
+			} else {
+				alert(response.data.status);
+			}
 		});
+
 	};
 
-	$scope.setGraphView = function () 
-	{
-		$scope.graphView.addData = !$scope.graphView.addData;
-		$scope.graphView.addDataBtn = !$scope.graphView.addDataBtn;
-		
-	}
+	function countAlert () {
+		vm.timer = 5;
 
-	$scope.graphChange = function (type) {
+		function count () {
+		vm.timer--;			
+		};
 
-		$scope.graphType = type;
+		timer = $interval(count, 1000, 5)
+			.then(function() {
+				vm.graphDialog.addData = false;
+				vm.graphDialog.delData = false;
+				vm.graphDialog.alterData = false;
+			});
+			
+	};
 
-	}
+	function setGraphView () {
 
-	$scope.roundValue = function(valor) {
+		vm.graphView.addData = !vm.graphView.addData;
+		vm.graphView.addDataBtn = !vm.graphView.addDataBtn;	
+
+	};
+
+	function graphChange (type) {
+
+		vm.graphType = type;
+
+	};
+
+	function roundValue (valor) {
 
 		return (Math.round(valor));
 
-	}
+	};
 
-	$scope.numAno = function (ano) {
+	function numAno (ano) {
 		ano = parseInt(ano);
 
 		switch(ano) {		
@@ -105,9 +155,9 @@ function graphDataCtrl($scope, graphDataFactory) {
 			default:
 			return "Todos";
 		}
-	}
+	};
 
-	$scope.numMes = function (mes) {
+	function numMes (mes) {
 		switch(parseInt(mes)) {
 
 			case 1:
@@ -150,6 +200,6 @@ function graphDataCtrl($scope, graphDataFactory) {
 				return "Todos";
 
 		}
-	}
+	};
 
 };

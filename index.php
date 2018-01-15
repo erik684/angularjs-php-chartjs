@@ -33,10 +33,11 @@
 <!-- CONTAINER PRINCIPAL -->
 <div class="container"> 
 	
-	<header ng-include="'views/header.php'"></header>
+	<header ng-include="'views/header.html'"></header>
 	
 	<main ui-view></main>
-	<footer ng-include="'views/footer.php'"></footer>
+	
+	<footer ng-include="'views/footer.html'"></footer>
 
 <!-- FIM CONTAINER PRINCIPAL -->
 </div>
