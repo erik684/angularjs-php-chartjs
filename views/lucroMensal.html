@@ -43,24 +43,50 @@
 
 
 <!-- CONTAINER CANVAS-CHARTJS -->
+
 <div class="container"> 
+	<div class="row">
+		<div class="col-sm-2">
 
-<form action="">
-	<label for="">Escolha o tipo de gráfico: </label><br>
-	<input type="radio" name="type" ng-click="graph.graphChange('line')" checked> Line
-	<input type="radio" name="type" ng-click="graph.graphChange('bar')"> Bar
-	<input type="radio" name="type" ng-click="graph.graphChange('polarArea')">	Polar Area 
-	<input type="radio" name="type" ng-click="graph.graphChange('radar')"> Radar 
-	<input type="radio" name="type" ng-click="graph.graphChange('doughnut')"> Doughnut
-</form>
+				<label for="" class="lead">Tipo de gráfico:</label><br>
+				<form class="form-control" action="">
+					<div class="form-group">
+						<input class="form-group" type="radio" name="radio" ng-click="graph.graphChange('line')" checked>
+						<label class="btn btn-success" for="radio-line"><span class="fa fa-area-chart fa-2x"></span></label>
+						<i class="text-muted pl-3" for="radio-line">Line</i>
+					</div>
+					<div class="form-group">
+						<input class="form-group" type="radio" name="radio" ng-click="graph.graphChange('bar')">
+						<label class="btn btn-success" for="radio-bar"><span class="fa fa-bar-chart fa-2x"></span></label>
+						<i class="text-muted pl-3" for="radio-line">Radio</i>
+					</div>
+					<div class="form-group">
+						<input class="form-group" type="radio" name="radio" ng-click="graph.graphChange('polarArea')">
+						<label class="btn btn-success" for="radio-polararea"><span class="fa fa-circle-o-notch fa-2x"></span></label>
+						<i class="text-muted pl-3" for="radio-line">Polar</i>
+					</div>
+					<div class="form-group">
+						<input class="form-group" type="radio" name="radio" ng-click="graph.graphChange('radar')">
+						<label class="btn btn-success" for="radio-radar"><span class="fa fa-gg-circle fa-2x"></span></label>
+						<i class="text-muted pl-3" for="radio-line">Radar</i>
+					</div>
+					<div class="form-group">
+						<input class="form-group" type="radio" name="radio" ng-click="graph.graphChange('doughnut')">
+						<label class="btn btn-success" for="radio-doughnut"><span class="fa fa-tachometer fa-2x"></span></label>
+						<i class="text-muted pl-3" for="radio-line">Doughnut</i>
+					</div>
+				</form>
 
-	<canvas id="base" class="chart chart-base"
-	chart-type="graph.graphType"
-	chart-data="graph.valor_total"
-	chart-labels="graph.meses"
-	chart-series="graph.series"
-	chart-options="graph.options">
-	</canvas>
 
+		</div>
+		<div class="col-md-10">
+			<canvas id="base" class="chart chart-base"
+			chart-type="graph.graphType"
+			chart-data="graph.valor_total"
+			chart-labels="graph.meses"
+			chart-series="graph.series"
+			chart-options="graph.options">
+			</canvas>
+		</div>
+	</div>
 </div>
-

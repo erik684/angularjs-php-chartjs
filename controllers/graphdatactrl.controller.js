@@ -62,7 +62,6 @@ function graphDataCtrl($rootScope, $interval, graphDataFactory) {
 			return vm.numAno(obj.ano);
 		});
 
-		console.log(vm['series']);;
 	});
 
 	factory.getData().then(function (response) {
@@ -98,7 +97,7 @@ function graphDataCtrl($rootScope, $interval, graphDataFactory) {
 	function addData () {
 
 		factory.setData(vm.graphDataAdd).then(function (response) {
-			console.log(vm.graphDataAdd);
+
 			if (response.data.status == "Registred") {
 				vm.graphDialog.addData = true;
 				vm.countAlert();

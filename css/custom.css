@@ -35,3 +35,7 @@ hr {
 th {
 	cursor: pointer;
 }
+
+.navbar-inverse .navbar-nav>.pill-red>a, .navbar-inverse .navbar-nav>.pill-red>a:focus, .navbar-inverse .navbar-nav>.pill-red>a:hover {
+    background-color: #932534;
+}
