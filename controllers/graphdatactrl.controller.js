@@ -7,7 +7,8 @@ function graphDataCtrl($rootScope, $interval, graphDataFactory) {
 	var vm = this;
 
 	//vars
-	vm['graphType'] = 'line';	
+	var currentTime = new Date();	
+	vm['graphtype'] = 'line';	
 	vm['options'] = {};
 	vm['series'] = {};
 	vm['meses'] = [];
@@ -41,8 +42,10 @@ function graphDataCtrl($rootScope, $interval, graphDataFactory) {
 		idade: undefined,
 		valor: undefined,
 		mes: undefined,
-		ano: undefined
+		ano: currentTime.getFullYear()
 	};
+
+
 
 	vm.graphDialog = {
 		addData: false,
@@ -59,43 +62,50 @@ function graphDataCtrl($rootScope, $interval, graphDataFactory) {
 
 	factory.getYears().then(function (response) { // series de datas em Ano
 		vm['series'] = response.data.map(function(obj){
-			return vm.numAno(obj.ano);
+			return obj.ano;
 		});
-
 	});
 
 	factory.getData().then(function (response) {
 
 		//vars
-		var auxArray;
-		x = 0;
+		auxArray = [];
+		auxArray['ano'] = [];
+		auxArray['valor'] = [];
+		
+		
 		count = Math.round(response.data.length/12); 
 		sliced = [];
-
-
-		auxArray = response.data.map(function (obj) {
-		  return obj.valor_total;
-		});
 
 		for(i = 1; i <= 12; i++) { //preenche 'meses' com nome de cada mes
 			vm['meses'][i-1] = vm.numMes(i); //meses inicia com indice 0 a 11
 		}
+		
+		x = 0;
+		i = 0;
 
-		for (i = 0; i < count; i++) {	
-			if ( ((auxArray[x]||[]) === undefined) || ((auxArray[x]||[]) === undefined) )  {
-				break;
+		vm.series.forEach(function (currentValue, index) {
+
+			while (vm['series'][i] == response.data[x].ano) {
+				auxArray['valor'].push(response.data[x].valor_total);
+
+				x++;
+				if (response.data[x] == undefined) {
+					break;
+				}
 			}
-			else {								
-				sliced = auxArray.slice(x, (x+12));			
-				x = x + 12;	
-				vm['valor_total'][i] = sliced;	
-				sliced = [];	
-			}
-		}
+			vm['valor_total'][i] = auxArray['valor'];
+			auxArray['valor'] = [];
+			i++;
+
+		});
+
 	});
 
 	function addData () {
-
+		
+		vm.graphDataAdd.ano = vm.graphDataAdd.ano.toString().slice(2);
+		vm.graphDataAdd.mes = mesNum(vm.graphDataAdd.mes);
 		factory.setData(vm.graphDataAdd).then(function (response) {
 
 			if (response.data.status == "Registred") {
@@ -134,7 +144,7 @@ function graphDataCtrl($rootScope, $interval, graphDataFactory) {
 
 	function graphChange (type) {
 
-		vm.graphType = type;
+		vm.graphtype = type;
 
 	};
 
@@ -156,8 +166,8 @@ function graphDataCtrl($rootScope, $interval, graphDataFactory) {
 		}
 	};
 
-	function numMes (mes) {
-		switch(parseInt(mes)) {
+	function numMes (num) {
+		switch(parseInt(num)) {
 
 			case 1:
 				return "Janeiro";
@@ -200,5 +210,52 @@ function graphDataCtrl($rootScope, $interval, graphDataFactory) {
 
 		}
 	};
+
+	function mesNum (mes) {
+		switch (mes) {
+
+			case "Janeiro":
+				return 1;
+				break;	
+			case "Fevereiro":
+				return 2;
+				break;				
+			case "Março":
+				return 3;
+				break;
+			case "Abril":
+				return 4;
+				break;
+			case "Maio":
+				return 5;
+				break;
+			case "Junho":
+				return 6;
+				break;
+			case "Julho":
+				return 7;
+				break;
+			case "Agosto":
+				return 8;
+				break;
+			case "Setembro":
+				return 9;
+				break;
+			case "Outubro":
+				return 10;
+				break;
+			case "Novembro":
+				return 11;
+				break;
+			case "Dezembro":
+				return 12;
+				break;
+			default:
+				return "Todos";
+
+		}
+	
+
+	}
 
 };

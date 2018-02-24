@@ -7,7 +7,7 @@ function graphDataFactory ($http) {
 	factory = {};
 
 	factory.getData = function () {
-		return $http.get("./includes/json_filtrar_valores.php?selectAno=todos&selectMes=todos");
+		return $http.get("./includes/json_graph_api.php/graph");
 	}
 
 	factory.getYears = function () {
@@ -15,7 +15,7 @@ function graphDataFactory ($http) {
 	}
 
 	factory.setData = function (data) {
-		return $http.post("./includes/json_cadastrar_dados.php/graph", data)
+		return $http.post("./includes/json_graph_api.php/graph", data)
 	}
 
 	return factory;

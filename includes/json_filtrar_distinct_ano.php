@@ -2,7 +2,7 @@
 $dbconnection = mysqli_connect("localhost", "root", "", "hospitais");
 
 function resultadoFiltro($dbconnection) {
-	$sql = "SELECT DISTINCT ano FROM consultas";
+	$sql = "SELECT DISTINCT ano FROM consultas ORDER BY ano ASC";
 	$result = mysqli_query($dbconnection, $sql);	
 
 	return $result;

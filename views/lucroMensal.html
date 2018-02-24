@@ -14,20 +14,30 @@
 <hr>
 	<form ng-submit="graph.addData()" class="form-group">
 		<div class="row">
-			<div class="col-md-3 form-group" ng-show="graph.graphView.addData">
-				<input class="form-control" type="number" placeholder="Idade" ng-model="graph.graphDataAdd.idade">
+			<!-- IDADE INPUT -->
+			<div class="col-sm-2 form-group" ng-show="graph.graphView.addData">
+				<input class="form-control" type="number" placeholder="Idade" ng-model="graph.graphDataAdd.idade" min="1" max="150" required>
 			</div>
 
-			<div class="col-md-3 form-group" ng-show="graph.graphView.addData">
-				<input class="form-control" type="number" placeholder="Valor" ng-model="graph.graphDataAdd.valor">
+			<!-- VALOR INPUT -->
+			<div class="col-sm-2 form-group" ng-show="graph.graphView.addData">
+				<input class="form-control" type="number" placeholder="Valor" ng-model="graph.graphDataAdd.valor" min="1" max="999999" required>
 			</div>
 
-			<div class="col-md-3 form-group" ng-show="graph.graphView.addData">
-				<input class="form-control" type="text" placeholder="Mes" ng-model="graph.graphDataAdd.mes">			
+			<!-- MES SELECT -->
+			<div class="col-sm-2 form-group" ng-show="graph.graphView.addData">
+				<select class="form-control" ng-model="graph.graphDataAdd.mes" required>
+					<option value="" disabled selected>Mês</option>
+					<option ng-repeat="mes in graph.meses" >{{mes}}</option>
+				</select>
 			</div>
-			<div class="col-md-3 form-group" ng-show="graph.graphView.addData">
-				<input class="form-control" type="text" placeholder="Ano" ng-model="graph.graphDataAdd.ano">
-			</div>	
+
+			<!-- ANO INPUT -->
+			<div class="col-sm-2 form-group" id="input-ano" ng-show="graph.graphView.addData">
+				<input class="form-control" type="text" placeholder="Ano" ng-model="graph.graphDataAdd.ano" required>
+			</div>
+
+			<!-- ADICIONAR BUTTON  -->
 			<div class="col-md-12 form-group" ng-show="graph.graphView.addDataBtn">
 				<button id="btn_add" name="btn_add" class="btn btn-success" type="submit">Adicionar</button>
 			</div>
@@ -43,7 +53,6 @@
 
 
 <!-- CONTAINER CANVAS-CHARTJS -->
-
 <div class="container"> 
 	<div class="row">
 		<div class="col-sm-2">
@@ -58,7 +67,7 @@
 					<div class="form-group">
 						<input class="form-group" type="radio" name="radio" ng-click="graph.graphChange('bar')">
 						<label class="btn btn-success" for="radio-bar"><span class="fa fa-bar-chart fa-2x"></span></label>
-						<i class="text-muted pl-3" for="radio-line">Radio</i>
+						<i class="text-muted pl-3" for="radio-line">Bar</i>
 					</div>
 					<div class="form-group">
 						<input class="form-group" type="radio" name="radio" ng-click="graph.graphChange('polarArea')">
@@ -81,7 +90,7 @@
 		</div>
 		<div class="col-md-10">
 			<canvas id="base" class="chart chart-base"
-			chart-type="graph.graphType"
+			chart-type="graph.graphtype"
 			chart-data="graph.valor_total"
 			chart-labels="graph.meses"
 			chart-series="graph.series"

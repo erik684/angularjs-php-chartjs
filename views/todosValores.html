@@ -32,23 +32,113 @@
 					<span class="fa fa-sort" ng-show="sortKey=='ano'" ng-class="{'fa-sort-down':reverse,'fa-sort-up':!reverse}"></span>
 				</th>					
 				<th ng-click="sort('1*idade')"><u>IDADE</u>
-					<span class="fa fa-sort" ng-show="sortKey=='1*idade'" ng-class="{'fa fa-sort-numeric-desc':reverse,'fa fa-sort-numeric-asc':!reverse}"></span>				
+					<span class="fa fa-sort" ng-show="sortKey=='1*idade'" ng-class="{'fa fa-sort-numeric-desc':reverse,'fa fa-sort-numeric-asc':!reverse}"></span>		
+				</th>
+				<th>
+					<span><u>OPÇÕES</u></span>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-		<tr ng-repeat="x in consultas track by $index | orderBy:sortKey:reverse | filter: pesquisar | limitTo: itemsPerPage:beginPage">			
-			<td>{{ x.valor | currency }}</td>
-			<td>{{ x.mes | uppercase }}</td>
-			<td>{{ x.ano }}</td>
-			<td>{{ x.idade }}</td>
+		
+		<tr ng-repeat="x in consultas track by $index">		
+			<td id="valor">{{ x.valor | currency : "R$" }}</td>
+			<td id="mes">{{ x.mes }}</td>
+			<td id="ano">{{ x.ano }}</td>
+			<td id="idade">{{ x.idade }}</td>
+			<td>
+				<a class="del-button btn btn-danger"><span><i class="fa fa-trash"></i></span></a>
+
+				<a class="edit-button btn btn-info"
+
+				data-toggle="modal"
+				data-target="#edit-modal"
+				data-id="{{x.id}}"
+				data-valor="{{x.valor}}"
+				data-mes="{{x.mes}}"
+				data-ano="{{x.ano}}"
+				data-idade="{{x.idade}}">
+
+				<span><i class="fa fa-pencil"></i></span>
+				</a>
+
+			</td>
 		</tr>
 		</tbody>
 	</table>
 
-	<ul class="pagination">
+<!-- 	<ul class="pagination">
 		<li ng-class="{'page-item active': prevPageActive}"><a href="" class="page-link" ng-click="prevPage()">Previous</a></li>
 		<li ng-class="{'page-item active': nextPageActive}"><a href="" class="page-link" ng-click="nextPage()">Next</a></li>
-	</ul>
+	</ul> -->
 
 </div>
+
+<!-- EDIT MODAL -->
+<div class="modal fade" id="edit-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<input type="hidden" name="id" disabled>
+        <input type="number" name="valor" id="valor" >
+        <input type="number" name="testeinput" id="testeinput" class="testeinput">
+        <input type="text" name="ano" id="ano">
+        <input type="text" name="idade" id="idade" >
+        <input type="number" min="1" max="200">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+// $(document).ready(function() {
+// 	$('a.edit-button').click(function() {
+
+// 		console.log('teste');
+
+// 		var id = $(this).data('id');
+// 		var valor = $(this).data('valor');
+// 		var mes = $(this).data('mes');
+// 		var ano = $(this).data('ano');
+// 		var idade = $(this).data('idade');
+
+		
+
+// 		console.log(id);
+// 		console.log(valor);
+// 		console.log(mes);
+// 		console.log(ano);
+// 		console.log(idade);
+// 	});
+// });
+
+$(document).on("click", '.edit-button', function(e) {
+			console.log('teste');
+			$('#testeinput').val('sadsaas');
+			var id = $(this).data('id');
+			var valor = $(this).data('valor');
+			var mes = $(this).data('mes');
+			var ano = $(this).data('ano');
+			var idade = $(this).data('idade');
+
+			
+
+			console.log(id);
+			console.log(valor);
+			console.log(mes);
+			console.log(ano);
+			console.log(idade);
+
+			
+});
+</script>

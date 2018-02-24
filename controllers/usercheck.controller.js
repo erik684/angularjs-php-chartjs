@@ -35,8 +35,7 @@ function userCheck($rootScope, $state, $interval, user, userLogin) {
 	$rootScope.userView = { //mostrar/esconder menu para usuário
 		lucroBtn: false,
 		tdvaloresBtn: false,
-		logoutBtn: false,
-		
+		logoutBtn: false,		
 		userLogout: function() {
 			user.userLogout();
 			$rootScope.userView.lucroBtn = false;
@@ -80,7 +79,6 @@ function userCheck($rootScope, $state, $interval, user, userLogin) {
 	};
 
 	function loginCheck () {
-		console.log("loginCheck");
 
 		data = {
 			"username": vm.userLogin.username,
@@ -143,10 +141,5 @@ function userCheck($rootScope, $state, $interval, user, userLogin) {
 		};
 
 	};
-
-	// $rootScope.userView.logoutCheck = function logoutCheck () {
-	// 	console.log("logOut");
-
-	// };
 
 };

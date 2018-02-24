@@ -28,7 +28,7 @@ function todosValoresCtrl($scope, $http) {
 		$scope.itemsPerPage = $scope.pageQtdSelected;
 	}
 
-	$http.get("http://localhost/AngularJS%20-%20Views/includes/json_todosvalores.php")
+	$http.get("http://localhost/AngularJS%20-%20Views/includes/json_todosvalores.php/consults")
 		.then(function(data) {
 
 			$scope['consultas'] = [];
